@@ -1,14 +1,12 @@
 import { API_URL } from '../common/constant';
 
-export const createURL = (request_payload, type) => {
+export const createURL = (type, request_payload) => {
   let para = '';
 
-
   for (let key in request_payload) {
-    if (key === 'method') para += `?method=${request_payload[key]}`;
-    else para += `&${key}=${request_payload[key]}`;
+    para += `&${key}=${request_payload[key]}`;
   }
   
-  const requestPath = `${API_URL}${type}/${para}&format=json&nojsoncallback=1`;
+  const requestPath = `${API_URL}/${type}?${para}`;
   return requestPath;
 }
