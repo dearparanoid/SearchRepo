@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Flex from 'styled-flex-component';
 import isEmpty from 'lodash/isEmpty';
+import Paper from '@material-ui/core/Paper';
 
 import { colors, typography } from '../theme/common_var';
 import { fadeIn } from '../theme/animation';
@@ -12,12 +13,18 @@ const _ = {
 
 const Container = styled(Flex)``;
 
-const RepoWrapper = styled(Flex)`
+const RepoWrapper = styled.a`
+  display: flex;
+  justify-content: flex-start;
+  align-items:center;
   width: 80%;
   margin: 0.5em;
   animation: ${fadeIn} 1s linear;
+  cursor: pointer;
+  text-decoration: none;
 `;
 
+const AvatarWrapper = styled.div``;
 
 const RepoTitle = styled.div`
   color: ${colors.gray.grayA4};
@@ -31,7 +38,10 @@ const SearchResult = ({ parentState }) => {
     <Container center column full>Wait....</Container> :
     <Container center column full>
       {parentState.items.map(item => (
-        <RepoWrapper key={item.id} justifyStart alignCenter>
+        <RepoWrapper key={item.id} justifyStart alignCenter className="paper" href={item.svn_url} target="_blank">
+          <AvatarWrapper className="avartar-circle">
+            <img src={item.owner.avatar_url} />
+          </AvatarWrapper>
           <RepoTitle>{item.name}</RepoTitle>
         </RepoWrapper>
       ))}
