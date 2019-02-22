@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import throttle from 'lodash/throttle';
 import styled from 'styled-components';
 import Flex from 'styled-flex-component';
 import TextField from '@material-ui/core/TextField';
@@ -10,6 +11,10 @@ import { colors } from '../theme/common_var';
 import './_searchInput.scss';
 
 import SearchResult from './searchResult';
+
+const _ = {
+  throttle,
+}
 
 const H2 = styled.h2`
   color: ${colors.gray.gray80};
@@ -35,7 +40,7 @@ class SearchContainer extends Component {
       q: this.state.searchPattern,
       sort: 'stars',
       order: 'desc',
-      per_page: 10,
+      per_page: 100,
       page: this.state.page
     });
     axios.get(requestUrl)
@@ -59,7 +64,7 @@ class SearchContainer extends Component {
           q: this.state.searchPattern,
           sort: 'stars',
           order: 'desc',
-          per_page: 10,
+          per_page: 100,
           page: this.state.page
         });
         axios.get(requestUrl)
@@ -74,11 +79,11 @@ class SearchContainer extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener("scroll", _.throttle((this.handleScroll), 1000));
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener("scroll", _.throttle((this.handleScroll), 1000));
   }
 
   render() {
