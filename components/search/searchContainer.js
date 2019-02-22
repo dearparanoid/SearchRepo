@@ -64,7 +64,6 @@ class SearchContainer extends Component {
         });
         axios.get(requestUrl)
           .then(response => {
-            console.log(this.state.page);
             this.setState({ items: [...this.state.items, ...response.data.items] });
           })
           .catch((error) => {

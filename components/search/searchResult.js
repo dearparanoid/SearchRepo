@@ -30,10 +30,8 @@ const RepoTitle = styled.div`
   font-size: ${typography.font.size.larger};
 `;
 
-const SearchResult = ({ parentState }) => {
-  console.log(parentState.items);
-
-  return _.isEmpty(parentState.items) ?
+const SearchResult = ({ parentState }) => (
+  _.isEmpty(parentState.items) ?
     <Container center column full>Wait....</Container> :
     <Container center column full>
       {parentState.items.map(item => (
@@ -47,6 +45,6 @@ const SearchResult = ({ parentState }) => {
         </Fragment>
       ))}
     </Container>
-}
+)
 
 export default SearchResult;
