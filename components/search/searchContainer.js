@@ -22,6 +22,7 @@ class SearchContainer extends Component {
     ...this.state,
     searchPattern: '',
     page: 1,
+    height: 0,
   }
 
   handleChange = e => {
@@ -39,12 +40,46 @@ class SearchContainer extends Component {
     });
     axios.get(requestUrl)
       .then(response => {
-        console.log(response);
         this.setState(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  handleScroll = () => {
+    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    const windowBottom = windowHeight + window.pageYOffset;
+    if (windowBottom >= docHeight) {
+      this.setState({ page: this.state.page + 1 }, () => {
+        const requestUrl = createURL(REPO, {
+          q: this.state.searchPattern,
+          sort: 'stars',
+          order: 'desc',
+          per_page: 10,
+          page: this.state.page
+        });
+        axios.get(requestUrl)
+          .then(response => {
+            console.log(this.state.page);
+            this.setState({ items: [...this.state.items, ...response.data.items] });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   render() {

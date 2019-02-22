@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import Flex from 'styled-flex-component';
 import isEmpty from 'lodash/isEmpty';
-import Paper from '@material-ui/core/Paper';
 
 import { colors, typography } from '../theme/common_var';
 import { fadeIn } from '../theme/animation';
@@ -38,12 +37,14 @@ const SearchResult = ({ parentState }) => {
     <Container center column full>Wait....</Container> :
     <Container center column full>
       {parentState.items.map(item => (
-        <RepoWrapper key={item.id} justifyStart alignCenter className="paper" href={item.svn_url} target="_blank">
-          <AvatarWrapper className="avartar-circle">
-            <img src={item.owner.avatar_url} />
-          </AvatarWrapper>
-          <RepoTitle>{item.name}</RepoTitle>
-        </RepoWrapper>
+        <Fragment key={item.id}>
+          <RepoWrapper key={item.id} justifyStart alignCenter className="paper" href={item.svn_url} target="_blank">
+            <AvatarWrapper className="avartar-circle">
+              <img src={item.owner.avatar_url} />
+            </AvatarWrapper>
+            <RepoTitle>{item.name}</RepoTitle>
+          </RepoWrapper>
+        </Fragment>
       ))}
     </Container>
 }
